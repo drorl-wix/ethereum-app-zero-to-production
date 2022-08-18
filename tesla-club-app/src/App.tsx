@@ -11,21 +11,26 @@ function App() {
     setIsChecking(true);
 
     try {
-      const carFactoryContract = await getTeslaClubContract();
+      const carFactoryContract = await getTeslaFactoryContract();
       const hasTesla = await carFactoryContract.hasTesla();
+
       setHasTesla(hasTesla);
+
+      if (!hasTesla) {
+        alert('Sorry, seems that you do not owe Tesla :/');
+      }
     } finally {
       setIsChecking(false);
     }
   };
 
-  const getTeslaClubContract = async (): Promise<Contract> => {
+  const getTeslaFactoryContract = async (): Promise<Contract> => {
     const abi = [
       "function hasTesla() public view returns (bool)",
     ];
 
     const signer = await getSignerFromMetaMask();
-    const contractAddress = "0x2f991c16e94694c6cf2668ec008d30d6f2787396";
+    const contractAddress = "0x91D851a9aE3FAe94dD74B21e00908EBe8cFbf1B6"; // Replace it with your smart contract
 
     return new Contract(contractAddress, abi, signer);
   }
@@ -65,4 +70,3 @@ function App() {
 }
 
 export default App;
-
